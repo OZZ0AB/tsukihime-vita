@@ -28,7 +28,7 @@ cmake --build build --target vpk -j2
 Outputs:
 
 - `build/TsukihimeVita.vpk`
-- `build/TsukihimeVita-01.04.vpk`
+- `build/TsukihimeVita-01.05.vpk`
 
 The VPK contains the executable and LiveArea resources. It does not include the game script, archives, font, or music. The executable loads those from `ux0:data/tsukihime/game/` and stores saves in `ux0:data/tsukihime/save/`.
 
@@ -53,6 +53,18 @@ python3 scripts/prepare_livearea.py --icon icon.png --background background.jpg
 The script preserves image proportions and uses centered crops for the background and launch panel.
 
 ## Local checks
+
+The English word-wrap check requires a host C++ compiler:
+
+```sh
+mkdir -p build
+g++ -std=c++11 -Wall -Wextra -Werror -fsanitize=address,undefined \
+  -fno-omit-frame-pointer -Iengine/src/common \
+  diagnostics/verify_word_wrap.cpp -o build/verify_word_wrap
+ASAN_OPTIONS=detect_leaks=0 build/verify_word_wrap
+```
+
+Optionally append the path to your own English `nscript.dat` to check its ordinary ASCII dialogue at the game's 72-cell line width. This is a host layout simulation, not a substitute for checking rendering, backlog, and save/load on the Vita. It does not modify or export the game script.
 
 The save-support check runs on Linux and requires a host C++ compiler:
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.05 - 2026-10-27
+
+- Wrap single-byte English dialogue at spaces so words that fit on a line are not split at the right edge.
+- Preserve scripted line breaks, click waits, page changes, and indentation; keep character wrapping for words longer than a full line.
+- Record automatic word breaks for consistent backlog and saved-page redraw.
+- English word wrapping was confirmed working on a Vita.
+
 ## 1.04 - 2026-10-26
 
 - Added the selected bubble icon, LiveArea background, and launch-panel artwork at the required Vita dimensions.

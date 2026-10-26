@@ -6,7 +6,7 @@ A native PS Vita homebrew port for the original Tsukihime English release. It ru
 
 ## Download
 
-Download `TsukihimeVita-01.04.vpk` from this repository's **Releases** section. Version 1.04 includes the working save fix and the custom bubble and LiveArea artwork.
+Download [TsukihimeVita-01.05.vpk](https://github.com/OZZ0AB/tsukihime-vita/releases/download/v1.05/TsukihimeVita-01.05.vpk) from the [latest release](https://github.com/OZZ0AB/tsukihime-vita/releases/latest). Version 1.05 adds English word wrapping while retaining the working save fix and custom bubble and LiveArea artwork.
 
 The game script, archives, font, translation, and music are not included. Supply the data from your own compatible copy of the game.
 
@@ -16,11 +16,11 @@ The game script, archives, font, translation, and music are not included. Supply
 - The original Tsukihime game data prepared for the mirror moon English patch, version 1.2.
 - Sufficient free storage for the game files and saves.
 
-This port was tested on the project owner's Vita. Gameplay and saving were confirmed working; every route and scene has not been exhaustively tested. The remake and unrelated NScripter games are outside this release's tested scope.
+This port was tested on the project owner's Vita. Gameplay, saving, and the English word-wrap update were confirmed working; every route and scene has not been exhaustively tested. The remake and unrelated NScripter games are outside this release's tested scope.
 
 ## Installation
 
-1. Transfer `TsukihimeVita-01.04.vpk` to the Vita and install it with VitaShell.
+1. Transfer `TsukihimeVita-01.05.vpk` to the Vita and install it with VitaShell.
 2. Create `ux0:data/tsukihime/game/`.
 3. Copy the contents of your game's `Game` folder into that directory, using the layout below.
 4. Launch the **Tsukihime** bubble.
@@ -64,6 +64,10 @@ These are the engine's default Vita mappings. To save, open the in-game menu, se
 Save slots are stored at `ux0:data/tsukihime/save/save1.dat` through `save20.dat`. Back up the whole `ux0:data/tsukihime/` directory before moving installations between memory cards.
 
 The save and load menus use English text and ASCII digits compatible with the supplied English font. If a save timestamp and the system clock are both invalid, the slot displays January 1, 2000 at 00:00. This affects the displayed timestamp only; the system clock is not changed.
+
+## English text formatting
+
+Version 1.05 wraps ordinary single-byte English dialogue at spaces so words that fit on a line move intact to the next line. Scripted line breaks and page changes remain in effect. Words longer than an entire line still wrap by character. Automatic word breaks are retained in backlog and saved-page text.
 
 ## Troubleshooting
 

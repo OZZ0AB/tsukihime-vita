@@ -25,6 +25,7 @@
 #include "ONScripter.h"
 #include "coding2utf16.h"
 #include "Utils.h"
+#include "../common/english_word_wrap.h"
 
 extern Coding2UTF16 *coding2utf16;
 
@@ -809,6 +810,26 @@ bool ONScripter::processText()
     if (pagetag_flag) page_enter_status = 1;
 
     new_line_skip_flag = false;
+
+    // English dialogue uses half-width cells. Move the next complete word to
+    // the next line before drawing its separating spaces, rather than letting
+    // drawChar split it at the right edge. Record the break for backlog/redraw.
+    if ((script_h.getEndStatus() & ScriptHandler::END_1BYTE_CHAR) &&
+        sentence_font.getTateyokoMode() == FontInfo::YOKO_MODE) {
+        const tsukihime::WordWrap wrap = tsukihime::englishWordWrap(
+            script_h.getStringBuffer(), string_buffer_offset,
+            sentence_font.xy[0], sentence_font.num_xy[0] * 2,
+            indent_offset * 2);
+        if (wrap.new_line) {
+            current_page->add('\n');
+            sentence_font.newLine();
+            for (int i = 0; i < indent_offset * 2; ++i) {
+                current_page->add(' ');
+                sentence_font.advanceCharInHankaku(1);
+            }
+            string_buffer_offset += wrap.skip_spaces;
+        }
+    }
     
     char ch = script_h.getStringBuffer()[string_buffer_offset];
     if ( IS_TWO_BYTE(ch) ){ // Shift jis
