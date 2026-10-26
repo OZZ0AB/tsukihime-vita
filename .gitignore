@@ -1,0 +1,14 @@
+# User-provided game files must never enter the port repository.
+/Tsukihime/
+
+# Local VitaSDK build output.
+/build/
+/.vitasdk/
+
+# Local copy of VitaSDK's package-manager bootstrap source.
+/tools/
+/publish/
+
+# The engine is imported from its upstream repository. Its nested Git metadata
+# is intentionally local to this checkout.
+/engine/.git/
