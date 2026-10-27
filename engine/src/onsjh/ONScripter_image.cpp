@@ -853,6 +853,38 @@ void ONScripter::refreshSurface( SDL_Surface *surface, SDL_Rect *clip_src, int r
             drawTaggedSurface( surface, bl->anim[bl->show_flag-1], clip );
         bl = bl->next;
     }
+    drawDialogueSizeNotice(surface, clip);
+}
+
+void ONScripter::drawDialogueSizeNotice(SDL_Surface *surface, const SDL_Rect &clip)
+{
+    if (!dialogue_size_notice || system_menu_mode != SYSTEM_NULL ||
+        !(display_mode & DISPLAY_MODE_TEXT) || root_button_link.next ||
+        sentence_font.dialogueSizeLevel() < 0) return;
+    FontInfo notice = sentence_font;
+    notice.ttf_font[0] = notice.ttf_font[1] = NULL;
+    notice.font_size_xy[0] = notice.font_size_xy[1] = 12;
+    if (!notice.openFont(font_file, screen_ratio1, screen_ratio2)) return;
+    static const char *names[] = {"Original", "Larger", "Large", "Largest"};
+    char label[96];
+    snprintf(label, sizeof(label), "Text size %d/4: %s%s", dialogue_size_level + 1,
+             names[dialogue_size_level],
+             sentence_font.dialogueSizeLevel() == dialogue_size_level ? "" : " (next page)");
+    const SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *text = TTF_RenderUTF8_Blended(static_cast<TTF_Font *>(notice.ttf_font[0]), label, color);
+    if (!text) return;
+    SDL_Rect box = {18 * screen_ratio1 / screen_ratio2,
+                    458 * screen_ratio1 / screen_ratio2,
+                    text->w + 8, text->h + 2};
+    if (box.y + box.h > surface->h) box.y = surface->h - box.h;
+    SDL_Rect old_clip;
+    SDL_GetClipRect(surface, &old_clip);
+    SDL_SetClipRect(surface, &clip);
+    SDL_FillRect(surface, &box, SDL_MapRGB(surface->format, 20, 20, 20));
+    SDL_Rect at = {box.x + 4, box.y + 1, text->w, text->h};
+    SDL_BlitSurface(text, NULL, surface, &at);
+    SDL_SetClipRect(surface, &old_clip);
+    SDL_FreeSurface(text);
 }
 
 void ONScripter::refreshSprite( int sprite_no, bool active_flag, int cell_no,

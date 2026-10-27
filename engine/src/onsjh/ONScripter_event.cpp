@@ -25,6 +25,7 @@
 
 #include "ONScripter.h"
 #include "Utils.h"
+#include "../common/dialogue_size.h"
 #if defined(LINUX)
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -851,6 +852,29 @@ bool ONScripter::keyPressEvent( SDL_KeyboardEvent *event )
 {
     current_button_state.button = 0;
     current_button_state.down_flag = false;
+#if defined(PSV)
+    if (event->keysym.sym == SDLK_o) {
+        // Joystick buttons may also generate a key-down callback in btndown
+        // mode. Cycle only on release, and never pass L through as page skip.
+        if (event->type == SDL_KEYUP && system_menu_mode == SYSTEM_NULL &&
+            !(event_mode & WAIT_BUTTON_MODE) &&
+            (event_mode & WAIT_INPUT_MODE) &&
+            sentence_font.dialogueSizeLevel() >= 0) {
+            dialogue_size_level = tsukihime::nextDialogueSize(dialogue_size_level);
+            dialogue_size_notice = true;
+            automode_flag = false;
+            skip_mode &= ~(SKIP_NORMAL | SKIP_TO_EOP);
+            if (current_page->text_count == 0) {
+                sentence_font.setDialogueSize(dialogue_size_level);
+                sentence_font.clear();
+            }
+            utils::printInfo("Dialogue size %d/4 selected for next page\n", dialogue_size_level + 1);
+            dirty_rect.fill(screen_width, screen_height);
+            flush(refreshMode());
+        }
+        return false;
+    }
+#endif
     if ( automode_flag ){
         automode_flag = false;
         return false;

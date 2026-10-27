@@ -342,6 +342,8 @@ ONScripter::ONScripter()
     current_button_state.down_flag = false;
     compatibilityMode = false;
     vsync = true;
+    dialogue_size_level = 0;
+    dialogue_size_notice = false;
 
     int i;
     for (i=0 ; i<MAX_SPRITE2_NUM ; i++)
@@ -1179,6 +1181,10 @@ void ONScripter::deleteSelectLink()
 
 void ONScripter::clearCurrentPage()
 {
+    // Freeze a page's layout while it is being read. A new page is the safe
+    // boundary at which a requested size can change without losing any text.
+    sentence_font.setDialogueSize(dialogue_size_level);
+    dialogue_size_notice = false;
     sentence_font.clear();
 
     int num = (sentence_font.num_xy[0]*2+1)*sentence_font.num_xy[1];

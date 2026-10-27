@@ -794,6 +794,9 @@ private:
 
     bool new_line_skip_flag;
     int  text_speed_no;
+    int dialogue_size_level;
+    bool dialogue_size_notice;
+    void drawDialogueSizeNotice(SDL_Surface *surface, const SDL_Rect &clip);
     bool is_kinsoku;
     AnimationInfo text_info;
     AnimationInfo sentence_font_info;

@@ -21,7 +21,7 @@ add_subdirectory(engine/src/onsjh)
 
 set(TSUKIHIME_APP_NAME "Tsukihime")
 set(TSUKIHIME_TITLE_ID "TSUKI0001")
-set(TSUKIHIME_VERSION "01.05")
+set(TSUKIHIME_VERSION "01.06")
 set(TSUKIHIME_VPK "${CMAKE_BINARY_DIR}/TsukihimeVita.vpk")
 
 # VitaSDK's macro changed the custom-target name in CMake 3.20.

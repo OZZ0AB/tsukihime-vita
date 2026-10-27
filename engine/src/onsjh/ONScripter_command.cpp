@@ -869,11 +869,24 @@ int ONScripter::selectCommand()
     }
 
     if ( select_mode != SELECT_CSEL_MODE ){
+        FontInfo choice_font = sentence_font;
+        if (choice_font.dialogueSizeLevel() > 0) {
+            const int x = choice_font.x(false);
+            const int y = choice_font.y(false);
+            choice_font.setDialogueSize(0);
+            choice_font.clear();
+            choice_font.top_xy[0] = x;
+            int choices = 0;
+            for (SelectLink *link = root_select_link.next; link; link = link->next)
+                if (*link->text) ++choices;
+            const int last_start = 480 - 18 - choices * choice_font.pitch_xy[1];
+            choice_font.top_xy[1] = y < last_start ? y : (last_start > 18 ? last_start : 18);
+        }
         last_select_link = root_select_link.next;
         int counter = 1;
         while( last_select_link ){
             if ( *last_select_link->text ){
-                ButtonLink *button = getSelectableSentence( last_select_link->text, &sentence_font );
+                ButtonLink *button = getSelectableSentence( last_select_link->text, &choice_font );
                 root_button_link.insert( button );
                 button->no = counter;
             }

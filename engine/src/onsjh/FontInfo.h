@@ -60,6 +60,8 @@ public:
 
     FontInfo();
     void reset();
+    int dialogueSizeLevel() const;
+    bool setDialogueSize(int level);
     void *openFont( char *font_file, int ratio1, int ratio2 );
     void setTateyokoMode( int tateyoko_mode );
     int getTateyokoMode();

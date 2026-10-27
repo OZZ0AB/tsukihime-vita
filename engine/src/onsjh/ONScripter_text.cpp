@@ -26,6 +26,7 @@
 #include "coding2utf16.h"
 #include "Utils.h"
 #include "../common/english_word_wrap.h"
+#include "../common/dialogue_size.h"
 
 extern Coding2UTF16 *coding2utf16;
 
@@ -370,6 +371,9 @@ void ONScripter::restoreTextBuffer(SDL_Surface *surface)
 
     char out_text[3] = { '\0','\0','\0' };
     FontInfo f_info = sentence_font;
+    // History can contain pages from several sizes. Its original-size layout
+    // fits every page without changing saved text or selection hit boxes.
+    if (current_page != cached_page) f_info.setDialogueSize(0);
     f_info.clear();
     for ( int i=0 ; i<current_page->text_count ; i++ ){
         if ( current_page->text[i] == 0x0a ){
@@ -832,6 +836,25 @@ bool ONScripter::processText()
     }
     
     char ch = script_h.getStringBuffer()[string_buffer_offset];
+    if (sentence_font.dialogueSizeLevel() > 0 &&
+        (script_h.getEndStatus() & ScriptHandler::END_1BYTE_CHAR) &&
+        ch != '@' && ch != '\\' && ch != '_' &&
+        tsukihime::dialogueNeedsPage(sentence_font.xy[0], sentence_font.xy[1],
+                                    sentence_font.num_xy[0], sentence_font.num_xy[1])) {
+        // This is a visual page break only: unlike clickNewPage(), it must not
+        // consume the next script byte. Resume at the same character afterward.
+        flush(refreshMode());
+        skip_mode &= ~SKIP_TO_EOL;
+        clickstr_state = CLICK_NEWPAGE;
+        if (skip_mode & SKIP_NORMAL || ctrl_pressed_status) {
+            event_mode = IDLE_EVENT_MODE;
+            if (waitEvent(0)) return false;
+        }
+        else if (doClickEnd()) return false;
+        newPage();
+        clickstr_state = CLICK_NONE;
+        return true;
+    }
     if ( IS_TWO_BYTE(ch) ){ // Shift jis
         /* ---------------------------------------- */
         /* Kinsoku process */

@@ -27,6 +27,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "FontInfo.h"
 #include "Utils.h"
+#include "../common/dialogue_size.h"
 
 #if defined(PSP)
 #include <string.h>
@@ -83,6 +84,34 @@ void FontInfo::reset()
     is_shadow = true;
     is_transparent = true;
     is_newline_accepted = false;
+}
+
+int FontInfo::dialogueSizeLevel() const
+{
+    if (tateyoko_mode != YOKO_MODE || top_xy[0] != 18 || top_xy[1] != 18)
+        return -1;
+    for (int level = 0; level < 4; ++level) {
+        const tsukihime::DialogueSize size = tsukihime::dialogueSize(level);
+        if (font_size_xy[0] == size.font && font_size_xy[1] == size.font &&
+            pitch_xy[0] == size.pitch_x && pitch_xy[1] == size.pitch_y &&
+            num_xy[0] == size.columns && num_xy[1] == size.rows) return level;
+    }
+    return -1;
+}
+
+bool FontInfo::setDialogueSize(int level)
+{
+    const int current = dialogueSizeLevel();
+    if (current < 0 || level < 0 || level > 3) return false;
+    if (current == level) return true;
+    const tsukihime::DialogueSize size = tsukihime::dialogueSize(level);
+    font_size_xy[0] = font_size_xy[1] = size.font;
+    pitch_xy[0] = size.pitch_x;
+    pitch_xy[1] = size.pitch_y;
+    num_xy[0] = size.columns;
+    num_xy[1] = size.rows;
+    ttf_font[0] = ttf_font[1] = NULL;
+    return true;
 }
 
 void *FontInfo::openFont( char *font_file, int ratio1, int ratio2 )

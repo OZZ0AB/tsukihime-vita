@@ -11,7 +11,7 @@ import zipfile
 from pathlib import Path
 
 
-VERSION = "01.05"
+VERSION = "01.06"
 UPSTREAM = "01955d7c1a4ecdff4245aa6e3fc08fd64625e4a9"
 
 
@@ -92,7 +92,7 @@ def main():
         "".join(f"{sha256(path)}  {path.name}\n" for path in checksum_files), encoding="utf-8"
     )
     manifest = {
-        "repository_name": "tsukihime-vita", "release_tag": "v1.05", "app_version": VERSION,
+        "repository_name": "tsukihime-vita", "release_tag": "v1.06", "app_version": VERSION,
         "title_id": "TSUKI0001", "upstream_commit": UPSTREAM,
         "source_files": sum(path.is_file() for path in repository.rglob("*")),
         "release_assets": [{"name": path.name, "bytes": path.stat().st_size, "sha256": sha256(path)} for path in checksum_files],

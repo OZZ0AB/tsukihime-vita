@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.06 - 2026-10-27
+
+- Repurposed the Vita L trigger to cycle original text size and three larger dialogue sizes (17, 19, 21, and 23 script pixels).
+- Apply size changes at the next text page and show the selected size in the bottom margin.
+- Adjust line width and page height for enlarged text, adding input pauses before a page would overflow.
+- Keep choice buttons and mixed-size backlog pages at the original size.
+- Keep the selected size for the current app session; launching the app starts at the original size.
+
 ## 1.05 - 2026-10-27
 
 - Wrap single-byte English dialogue at spaces so words that fit on a line are not split at the right edge.

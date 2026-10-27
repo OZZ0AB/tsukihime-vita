@@ -6,7 +6,7 @@ A native PS Vita homebrew port for the original Tsukihime English release. It ru
 
 ## Download
 
-Download [TsukihimeVita-01.05.vpk](https://github.com/OZZ0AB/tsukihime-vita/releases/download/v1.05/TsukihimeVita-01.05.vpk) from the [latest release](https://github.com/OZZ0AB/tsukihime-vita/releases/latest). Version 1.05 adds English word wrapping while retaining the working save fix and custom bubble and LiveArea artwork.
+Download [TsukihimeVita-01.06.vpk](https://github.com/OZZ0AB/tsukihime-vita/releases/download/v1.06/TsukihimeVita-01.06.vpk) from the [latest release](https://github.com/OZZ0AB/tsukihime-vita/releases/latest). Version 1.06 adds an L-trigger text-size cycle while retaining English word wrapping, the working save fix, and custom bubble and LiveArea artwork.
 
 The game script, archives, font, translation, and music are not included. Supply the data from your own compatible copy of the game.
 
@@ -20,7 +20,7 @@ This port was tested on the project owner's Vita. Gameplay, saving, and the Engl
 
 ## Installation
 
-1. Transfer `TsukihimeVita-01.05.vpk` to the Vita and install it with VitaShell.
+1. Transfer `TsukihimeVita-01.06.vpk` to the Vita and install it with VitaShell.
 2. Create `ux0:data/tsukihime/game/`.
 3. Copy the contents of your game's `Game` folder into that directory, using the layout below.
 4. Launch the **Tsukihime** bubble.
@@ -50,7 +50,7 @@ To upgrade, install the new VPK over the existing bubble. The title ID remains `
 | Cross, held | Fast-forward |
 | Triangle | Open the in-game menu or leave backlog |
 | Square | Enable auto mode |
-| L | Toggle instant page display |
+| L | Cycle original text size and three larger sizes (v1.06) |
 | R | Enable skip |
 | Select | Cycle text speed |
 | Start | Advance text |
@@ -68,6 +68,8 @@ The save and load menus use English text and ASCII digits compatible with the su
 ## English text formatting
 
 Version 1.05 wraps ordinary single-byte English dialogue at spaces so words that fit on a line move intact to the next line. Scripted line breaks and page changes remain in effect. Words longer than an entire line still wrap by character. Automatic word breaks are retained in backlog and saved-page text.
+
+Version 1.06 adds an L-trigger cycle: original, larger, large, largest, then original. The three larger dialogue sizes are approximately 12%, 24%, and 35% above the original. The bottom-margin notice confirms the selection; it takes effect on the next text page. Enlarged text uses fewer columns and rows and adds page pauses when needed. Menus, choice buttons, and backlog remain at their original size. The selection lasts for the current app session and resets on app restart. The native build and host layout checks passed; the new size-control behavior still needs confirmation on a Vita.
 
 ## Troubleshooting
 
